@@ -13,12 +13,11 @@ def construct_cluster
 
 end
 
-def find_cluster(long, lat)
+def find_cluster(long, lat, centroids)
 
   cluster = 0
   min_dist = Float::INFINITY
-  cluster_h = construct_cluster()
-  cluster_h.each_pair do |k, v|
+  centroids.each_pair do |k, v|
     tmp_dist = (k[:long] - long) ** 2 + (k[:lat] - lat) ** 2
 
     if tmp_dist < min_dist

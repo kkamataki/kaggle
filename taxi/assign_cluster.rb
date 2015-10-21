@@ -20,6 +20,7 @@ case type
 end
 
 f = open("cluster_converted_#{type}_supervised.csv",'w')
+cluster_centroids = construct_cluster()
 
 open(input_file) do |l|
 
@@ -36,9 +37,10 @@ open(input_file) do |l|
 
     cluster_tmp_a = []
 
-    geo_dat.each do |x|
+    #process only start point and end point cluster of each trip
+    [geo_dat[0], geo_dat[-1]].each do |x|
       y = x.split(",")
-      cluster = find_cluster(y[0].to_f,y[1].to_f)
+      cluster = find_cluster(y[0].to_f, y[1].to_f, cluster_centroids)
       cluster_tmp_a.push(cluster)
     end
 
