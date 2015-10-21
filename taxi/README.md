@@ -3,10 +3,6 @@
 This repository contains scripts that I used for the kaggle taxi prediction task. The Scripts in the initial commit are like for quick prototyping and hence have rooms for improvements (for example, many parameters and thresholds are hard-coded, which is usually not a good practice and there are some duplicated functionalities across the codes, which could be organized in better way).
 Most of the scripts still don't perform much input and output data validation, which also should be improved.
 
-[*1.filter_traindata.rb*](#filter_traindata.rb)
-[*2.assign_cluster.rb*](#assign_cluster.rb)
-[*3.assign_grid.rb*](#assign_grid.rb)
-
 ###Preprocessing Scripts
 
 ##### *1.filter_traindata.rb*
