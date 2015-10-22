@@ -54,7 +54,7 @@ rf_model.fit(training_data, training_label)
 
 output = rf_model.predict(test_data)
 
-f = open('rf_25p_prediction_result.dat','w')
+output_file = open('rf_25p_prediction_result.dat','w')
 for result in output:
-  f.write(str(result)+"\n")
-f.close
+  output_file.write(str(result)+"\n")
+output_file.close

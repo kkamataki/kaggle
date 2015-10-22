@@ -10,7 +10,7 @@ input_file = ""
 
 case type
   when 'train'
-    lazy_header = %Q{PATH"}
+    lazy_header = %Q{"PATH"}
     input_file = "filtered_train.csv"
   when 'test'
     lazy_header = %Q{"PATH"}
@@ -19,25 +19,25 @@ case type
     raise "Usage:./assign_grid.rb [train|test]"
 end
 
-f = open("grid_converted_#{type}_lazy.csv",'w')
+output_file = open("grid_converted_#{type}_lazy.csv",'w')
 
-open(input_file) do |l|
+open(input_file) do |line|
 
-  f.puts lazy_header
+  output_file.puts lazy_header
 
   #skip header
-  l.gets
-  l.read.split("\n").each do |rest|
+  line.gets
+  line.read.split("\n").each do |entry|
 
     #geoloc feat
-    geo_dat = rest.chomp.split("\"")[-1].gsub(/^\[\[|\]\]$/,"").split("],[")
+    geo_feat = entry.chomp.split("\"")[-1].gsub(/^\[\[|\]\]$/,"").split("],[")
 
     #remove consecutive same grid ids to make the trajectory shape clear
     grid_tmp_a = []
     prev_grid = nil
-    geo_dat.each do |x|
-      y = x.split(",")
-      grid = calc_grid(y[0].to_f,y[1].to_f)
+    geo_feat.each do |coordinate|
+      c = coordinate.split(",")
+      grid = calc_grid(c[0].to_f,c[1].to_f)
 
       if grid != prev_grid
         grid_tmp_a.push(grid)
@@ -46,10 +46,10 @@ open(input_file) do |l|
       prev_grid = grid
     end
 
-    f.puts grid_tmp_a.join(",")
+    output_file.puts grid_tmp_a.join(",")
 
   end
 
 end
 
-f.close
+output_file.close

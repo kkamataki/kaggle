@@ -2,12 +2,12 @@
 
 def construct_training_path_set(filename)
   training_path_set = {}
-  open(filename) do |l|
+  open(filename) do |line|
     #skip header
-    l.gets
+    line.gets
     #iterate through the entire training set and get samples starting from same the grid
-    l.read.split("\n").each do |rest|
-      grids = rest.split(",")
+    line.read.split("\n").each do |entry|
+      grids = entry.split(",")
       start_grid_id = grids[0]
       training_path_set.key?(start_grid_id)? training_path_set[start_grid_id].push(grids): training_path_set[start_grid_id] = [grids]
     end
@@ -23,29 +23,29 @@ def find_best_geo(partial_trajectory, training_path_set)
 
   partial_trajectory.each_with_index do |val, idx|
     break if training_candidates.size < 50
-    training_candidates.delete_if{|x| x[idx] != val}
+    training_candidates.delete_if{|trajectory| trajectory[idx] != val}
   end
 
   result_geo_points = []
-  training_candidates.each do |x|
-    result_geo_points.push(x[-1])
+  training_candidates.each do |end_points|
+    result_geo_points.push(end_points[-1])
   end
 
   return result_geo_points
 end
 
-f = open('matched_geo_endpoints_less_than50.csv','w')
-f.puts "End_locs_in_training_data"
+output_file = open('matched_geo_endpoints_less_than50.csv','w')
+output_file.puts "End_locs_in_training_data"
 
 training_path_set = construct_training_path_set("grid_converted_train_lazy.csv")
 
-open("grid_converted_test_lazy.csv") do |l|
+open("grid_converted_test_lazy.csv") do |line|
   #skip header
-  l.gets
-  l.read.split("\n").each do |rest|
-    tmp_result = find_best_geo(rest.split(","),training_path_set)
-    f.puts tmp_result.join(",")
+  line.gets
+  line.read.split("\n").each do |entry|
+    tmp_result = find_best_geo(entry.split(","),training_path_set)
+    output_file.puts tmp_result.join(",")
   end
 end
 
-f.close
+output_file.close

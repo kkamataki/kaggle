@@ -1,24 +1,24 @@
 #!/usr/local/bin/ruby
 
 ##want to convert "CALL_TYPE", "ORIGIN_CALL", "ORIGIN_STAND", "TAXI_ID", "DAY_TYPE", "MISSING_DATA" into discrete feat
-#dat[1] => CALL_TYPE
-#dat[2] => ORIGIN_CALL
-#dat[3] => ORIGIN_STAND
-#dat[4] => TAXI_ID
-#dat[6] => DAY_TYPE
-#dat[7] => MISSING_DATA
+#feature[1] => CALL_TYPE
+#feature[2] => ORIGIN_CALL
+#feature[3] => ORIGIN_STAND
+#feature[4] => TAXI_ID
+#feature[6] => DAY_TYPE
+#feature[7] => MISSING_DATA
 
 def original_feat_set_constructor(filename, original_feat_set)
-  open(filename) do |l|
-    l.gets
-    l.read.split("\n").each do |rest|
-      dat = rest.chomp.split(",")
-      original_feat_set[:CALL_TYPE].push(dat[1])
-      original_feat_set[:ORIGIN_CALL].push(dat[2])
-      original_feat_set[:ORIGIN_STAND].push(dat[3])
-      original_feat_set[:TAXI_ID].push(dat[4])
-      original_feat_set[:DAY_TYPE].push(dat[6])
-      original_feat_set[:MISSING_DATA].push(dat[7])
+  open(filename) do |line|
+    line.gets
+    line.read.split("\n").each do |entry|
+      feature = entry.chomp.split(",")
+      original_feat_set[:CALL_TYPE].push(feature[1])
+      original_feat_set[:ORIGIN_CALL].push(feature[2])
+      original_feat_set[:ORIGIN_STAND].push(feature[3])
+      original_feat_set[:TAXI_ID].push(feature[4])
+      original_feat_set[:DAY_TYPE].push(feature[6])
+      original_feat_set[:MISSING_DATA].push(feature[7])
     end
   end
 end

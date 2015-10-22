@@ -12,32 +12,32 @@ output_pair = {:train=>"discretized_train_supervised.csv",
 
 input_pair.each_pair do |k,v|
 
-  f = open(output_pair[k], 'w')
-  open(v) do |l|
-    f.puts l.gets
-    l.read.split("\n").each do |rest|
+  output_file = open(output_pair[k], 'w')
+  open(v) do |line|
+    output_file.puts line.gets
+    line.read.split("\n").each do |entry|
 
-      dat = rest.chomp.split(",")
+      features = entry.chomp.split(",")
 
       tmp_array = [
-      dat[0].gsub!("\"","").to_i,
-      converted_feat_ids[:CALL_TYPE][dat[1]],
-      converted_feat_ids[:ORIGIN_CALL][dat[2]],
-      converted_feat_ids[:ORIGIN_STAND][dat[3]],
-      converted_feat_ids[:TAXI_ID][dat[4]],
-      dat[5].gsub!("\"","").to_i,
-      converted_feat_ids[:DAY_TYPE][dat[6]],
-      converted_feat_ids[:MISSING_DATA][dat[7]],
-      dat[8].gsub!("\"","").to_i
+        features[0].gsub!("\"","").to_i,
+        converted_feat_ids[:CALL_TYPE][features[1]],
+        converted_feat_ids[:ORIGIN_CALL][features[2]],
+        converted_feat_ids[:ORIGIN_STAND][features[3]],
+        converted_feat_ids[:TAXI_ID][features[4]],
+        features[5].gsub!("\"","").to_i,
+        converted_feat_ids[:DAY_TYPE][features[6]],
+        converted_feat_ids[:MISSING_DATA][features[7]],
+        features[8].gsub!("\"","").to_i
       ]
 
       if k == :train
-        tmp_array.push(dat[9].gsub!("\"","").to_i)
+        tmp_array.push(features[9].gsub!("\"","").to_i)
       end
 
-      f.puts tmp_array.join(",")
+      output_file.puts tmp_array.join(",")
     end
   end
 
-  f.close
+  output_file.close
 end

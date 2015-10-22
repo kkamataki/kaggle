@@ -119,10 +119,10 @@ for epoch in xrange(1, n_epoch+1):
     prediction_result = make_prediction(np.array(test_data.todense()), train=False)
 
     # keep over-writing latest prediction result
-    f = open('dnn_05p_prediction_result.dat','w')
+    output_file = open('dnn_05p_prediction_result.dat','w')
     for result in prediction_result:
-      f.write(str(result)+"\n")
-    f.close
+      output_file.write(str(result)+"\n")
+    output_file.close
 
     print prediction_result
 

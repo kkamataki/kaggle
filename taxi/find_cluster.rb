@@ -4,9 +4,9 @@ def construct_cluster
 
   id = 0
   cluster_h = {}
-  open("50clusters.dat").each do |x|
-    dat = x.chomp.split(" ")
-    cluster_h[{:long => dat[0].to_f, :lat => dat[1].to_f}] = id
+  open("50clusters.dat").each do |centroid|
+    c = centroid.chomp.split(" ")
+    cluster_h[{:long => c[0].to_f, :lat => c[1].to_f}] = id
     id += 1
   end
   cluster_h

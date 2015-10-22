@@ -5,29 +5,30 @@ raise "./supervised_classification_postprocessor.rb input_filename output_filena
 #read cluster data
 cluster_longlat = []
 
-open("50clusters.dat").each do |l|
-  dat = l.chomp.split(" ").map{|x| x.to_f}
-  cluster_longlat.push({:long => dat[0], :lat => dat[1]})
+open("50clusters.dat").each do |line|
+  centroid = line.chomp.split(" ").map{|x| x.to_f}
+  cluster_longlat.push({:long => centroid[0], :lat => centroid[1]})
 end
 
 tid_set = []
-open("sampleSubmission.csv").each do |x|
-  tid = x.split(",")[0]
+open("sampleSubmission.csv").each do |line|
+  tid = line.split(",")[0]
   tid_set.push(tid) if tid =~ /T\d/
 end
 
 
-f = open(ARGV[1],'w')
-f.puts %Q{"TRIP_ID","LATITUDE","LONGITUDE"}
+output_file = open(ARGV[1],'w')
+output_file.puts %Q{"TRIP_ID","LATITUDE","LONGITUDE"}
 
 tid_idx = 0
 #process clustering result
-open(ARGV[0]).each do |x|
+input_file = ARGV[0]
+open(input_file).each do |line|
 
-  idx = x.chomp.to_i
-  f.print tid_set[tid_idx] + ","
-  f.puts cluster_longlat[idx][:lat].to_s + "," + cluster_longlat[idx][:long].to_s
+  cluster_id = line.chomp.to_i
+  output_file.print tid_set[tid_idx] + ","
+  output_file.puts cluster_longlat[cluster_id][:lat].to_s + "," + cluster_longlat[cluster_id][:long].to_s
   tid_idx += 1
 end
 
-f.close
+output_file.close
